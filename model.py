@@ -114,6 +114,23 @@ mae = mean_absolute_error(y_te_h, y_pred_h)
 print(f"R² Score: {r2:.4f}")
 print(f"MAE: ₦{mae:,.2f}")
 
+
+# Question 13
+print("MAE (Mean Absolute Error): Measures the average magnitude of absolute errors in original units. It treats all error sizes linearly.MSE \n(Mean Squared Error): Squares errors before averaging. Heavily penalizes large errors, but units are squared (e.g., Naira^2).\nRMSE (Root Mean Squared Error): Takes the square root of MSE to return errors back to original units (e.g.Naira) while retaining sensitivity to large outliers.\n\nWhen to prefer RMSE over MAE: Prefer RMSE when large prediction errors are disproportionately costly for the business. For example, underpredicting a luxury estate by ₦50 Million is vastly worse than making ten ₦5 Million errors; RMSE heavily penalizes that single massive error, forcing the model to minimize large blunders.")
+
+# Question 14
+scores = cross_val_score(model, X_train_scaled, y_train, cv=5, scoring="accuracy")
+
+print(f"5-Fold CV Accuracy Scores: {scores}")
+print(f"Mean CV Accuracy: {scores.mean():.4f} +/- {scores.std():.4f}")
+print("Advantage over single split: A single train/test split can yield misleadingly high or low accuracy depending on how luck assigns data points to train vs. test. $k$-Fold Cross-Validation trains and tests $k$ separate times on $k$ different folds, ensuring every sample is used for both training and testing. This produces a much more stable, reliable metric with standard deviation confidence intervals.")
+
+# Question 15
+print("Overfitting (High Variance): Occurs when a model is too complex and memorizes noise/outliers in the training set.\nSymptom: High training performance (e.g., 99% accuracy) but poor test performance (e.g., 68% accuracy).\nUnderfitting (High Bias): Occurs when a model is too simple to capture the underlying structure of the data.\nSymptom: Poor performance on both training data and test data (e.g., 55% accuracy on training, 54% on test).")
+
+# Question 16
+print("What's wrong: Tuning hyperparameters repeatedly against the test set causes Data Leakage. The test set's information indirectly leaks into model selection decisions. The reported test accuracy becomes overly optimistic because the model was explicitly selected to fit that specific test set.What to do instead: Split data into 3 subsets: Train, Validation, and Test sets (or use k-fold cross-validation on the training set). Tune hyperparameters exclusively on the validation set/cross-validation folds, and evaluate on the held-out test set only once at the very end to measure true unbiased performance.")
+
 # Question 12
 import matplotlib.pyplot as plt
 
@@ -134,17 +151,4 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-print("With a test set of only 2 properties ($20\%$ of 10 rows), the two predictions fall on opposite sides of the perfect prediction line—one slightly above (overpredicted) and one slightly below (underpredicted).Because the errors are balanced on either side of the line, there is no obvious systematic bias (such as consistently underpredicting or overpredicting). However, because the test set consists of only two data points, $N=2$ is too small to definitively prove whether the model's errors are purely random across all price ranges. A larger dataset would be needed to thoroughly evaluate error variance.")
-
-# Question 13
-print("MAE (Mean Absolute Error): Measures the average magnitude of absolute errors in original units. It treats all error sizes linearly.MSE \n(Mean Squared Error): Squares errors before averaging. Heavily penalizes large errors, but units are squared (e.g., Naira^2).\nRMSE (Root Mean Squared Error): Takes the square root of MSE to return errors back to original units (e.g.Naira) while retaining sensitivity to large outliers.\n\nWhen to prefer RMSE over MAE: Prefer RMSE when large prediction errors are disproportionately costly for the business. For example, underpredicting a luxury estate by ₦50 Million is vastly worse than making ten ₦5 Million errors; RMSE heavily penalizes that single massive error, forcing the model to minimize large blunders.")
-
-# Question 14
-scores = cross_val_score(model, X_train_scaled, y_train, cv=5, scoring="accuracy")
-
-print(f"5-Fold CV Accuracy Scores: {scores}")
-print(f"Mean CV Accuracy: {scores.mean():.4f} +/- {scores.std():.4f}")
-print("Advantage over single split: A single train/test split can yield misleadingly high or low accuracy depending on how luck assigns data points to train vs. test. $k$-Fold Cross-Validation trains and tests $k$ separate times on $k$ different folds, ensuring every sample is used for both training and testing. This produces a much more stable, reliable metric with standard deviation confidence intervals.")
-
-# Question 15
-print("Overfitting (High Variance): Occurs when a model is too complex and memorizes noise/outliers in the training set.\nSymptom: High training performance (e.g., 99% accuracy) but poor test performance (e.g., 68% accuracy).\nUnderfitting (High Bias): Occurs when a model is too simple to capture the underlying structure of the data.\nSymptom: Poor performance on both training data and test data (e.g., 55% accuracy on training, 54% on test).")
+print("With a test set of only 2 properties (20% of 10 rows), the two predictions fall on opposite sides of the perfect prediction line—one slightly above (overpredicted) and one slightly below (underpredicted).Because the errors are balanced on either side of the line, there is no obvious systematic bias (such as consistently underpredicting or overpredicting). However, because the test set consists of only two data points, N=2 is too small to definitively prove whether the model's errors are purely random across all price ranges. A larger dataset would be needed to thoroughly evaluate error variance.")
